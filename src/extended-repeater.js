@@ -15,9 +15,33 @@ const { NotImplementedError } = require('../extensions/index.js');
  * => 'STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS**STRINGPLUS00PLUS00PLUS'
  *
  */
-function repeater(/* str, options */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+
+const objWithSpecificCoercion = {
+  [Symbol.toPrimitive]: hint => hint !== 'number' ? 'STRING_OR_DEFAULT' : 'NUMBER'
+};
+
+function repeater(str, options) {
+  let {
+    repeatTimes = 1,
+    separator = "+",
+    addition = "",
+    additionRepeatTimes = 1,
+    additionSeparator = "|"
+  } = options;
+
+  str = String(str);
+  addition = String(addition);
+
+  let formedAddition = "";
+  for (let i = 1; i <= additionRepeatTimes; i++) {
+    formedAddition += additionRepeatTimes === i ? addition : addition + additionSeparator
+  }
+  let repeatedString = "";
+  for (let i = 1; i <= repeatTimes; i++) {
+    repeatedString += repeatTimes === i ? str + formedAddition : str + formedAddition + separator
+  }
+
+  return repeatedString;
 }
 
 module.exports = {
